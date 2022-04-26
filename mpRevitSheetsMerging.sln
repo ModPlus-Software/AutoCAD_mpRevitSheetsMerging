@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mpRevitSheetsMerging", "mpRevitSheetsMerging\mpRevitSheetsMerging.csproj", "{DBC64B05-EA7D-470A-9FCE-E598B4F8134A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBC64B05-EA7D-470A-9FCE-E598B4F8134A}.Debug|x64.ActiveCfg = Debug|x64
+		{DBC64B05-EA7D-470A-9FCE-E598B4F8134A}.Debug|x64.Build.0 = Debug|x64
+		{DBC64B05-EA7D-470A-9FCE-E598B4F8134A}.Release|x64.ActiveCfg = Release|Any CPU
+		{DBC64B05-EA7D-470A-9FCE-E598B4F8134A}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61CB5385-5B92-4455-BC20-5CC58C5296F8}
+	EndGlobalSection
+EndGlobal
