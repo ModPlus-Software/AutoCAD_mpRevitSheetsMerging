@@ -144,6 +144,12 @@
 		<PackageReference Include="ModPlus.AutoCAD.API.2023" Version="1.0.0" ExcludeAssets="runtime" />
 		<PackageReference Include="ModPlus.AutoCAD.Module.2023" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Resources\mpRevitSheetsMerging_16x16.png" />
+	  <None Remove="Resources\mpRevitSheetsMerging_16x16_dark.png" />
+	  <None Remove="Resources\mpRevitSheetsMerging_32x32.png" />
+	  <None Remove="Resources\mpRevitSheetsMerging_32x32_dark.png" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ModPlusAPI" Version="8.9.0" ExcludeAssets="runtime" />
@@ -152,6 +158,13 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\mpRevitSheetsMerging_16x16.png" />
+	  <Resource Include="Resources\mpRevitSheetsMerging_16x16_dark.png" />
+	  <Resource Include="Resources\mpRevitSheetsMerging_32x32.png" />
+	  <Resource Include="Resources\mpRevitSheetsMerging_32x32_dark.png" />
 	</ItemGroup>
 
 </Project>
