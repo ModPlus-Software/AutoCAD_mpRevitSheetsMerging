@@ -5,7 +5,7 @@ using System.Linq;
 using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
-using Extensions;
+using ModPlus.Extensions;
 
 /// <summary>
 /// Сервис копирования объектов модели

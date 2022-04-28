@@ -1,10 +1,11 @@
 namespace mpRevitSheetsMerging.Services;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
-using Extensions;
+using ModPlus.Extensions;
 using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 /// <summary>
@@ -38,10 +39,19 @@ public class CopyLayoutService
         var newLayout = newLayoutId.GetObjectAs<Layout>();
 
         using var importLayoutBtr = importLayout.BlockTableRecordId.OpenAs<BlockTableRecord>();
-        var importLayoutIds = importLayoutBtr.OfType<ObjectId>().Where(id => id.IsFullyValid()).ToArray();
+        var importLayoutIds = importLayoutBtr.OfType<ObjectId>().Where(id => id.IsFullyValid()).ToList();
         if (importLayoutIds.Any())
         {
-            var importIds = new ObjectIdCollection(importLayoutIds);
+            for (var i = importLayoutIds.Count - 1; i >= 0; i--)
+            {
+                if (importLayoutIds[i].TryOpenAs<Viewport>() is { } vp &&
+                    Math.Abs(vp.Width - 12) < 0.1 &&
+                    Math.Abs(vp.Height - 9) < 0.1 &&
+                    vp.GeometricExtents.MinPoint.IsEqualTo(Point3d.Origin))
+                    importLayoutIds.RemoveAt(i);
+            }
+
+            var importIds = new ObjectIdCollection(importLayoutIds.ToArray());
             var map = new IdMapping();
 
             curDb.WblockCloneObjects(
@@ -50,9 +60,6 @@ public class CopyLayoutService
                 map,
                 DuplicateRecordCloning.MangleName,
                 false);
-
-            var ed = curDoc.Editor;
-            ed.Command("_.zoom", "_extents");
 
             MoveViewports(newLayout, move);
         }

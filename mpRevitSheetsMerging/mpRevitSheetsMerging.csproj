@@ -81,7 +81,7 @@
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<TargetFramework>net48</TargetFramework>
-		<Description>2022</Description>
+		<Description>2023</Description>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -98,55 +98,55 @@
 
 	<ItemGroup Condition="'$(Configuration)'=='A2013'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2013" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2013" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2013" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2014'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2014" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2014" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2014" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2015'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2015" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2015" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2015" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2016'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2016" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2016" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2016" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2017'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2017" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2017" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2017" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2018'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2018" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2018" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2018" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2019'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2019" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2019" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2019" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2020'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2020" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2020" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2020" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2021'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2021" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2021" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2021" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2022'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2022" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2022" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2022" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='A2023'">
 		<PackageReference Include="ModPlus.AutoCAD.API.2022" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2023" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2023" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
-		<PackageReference Include="ModPlus.AutoCAD.API.2022" Version="1.0.0" ExcludeAssets="runtime" />
-		<PackageReference Include="ModPlus.AutoCAD.Module.2022" Version="7.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.API.2023" Version="1.0.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlus.AutoCAD.Module.2023" Version="10.0.0" ExcludeAssets="runtime" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ModPlusAPI" Version="8.8.0" ExcludeAssets="runtime" />
+		<PackageReference Include="ModPlusAPI" Version="8.9.0" ExcludeAssets="runtime" />
 		<PackageReference Include="ModPlusStyle" Version="4.2.0" ExcludeAssets="runtime" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<PrivateAssets>all</PrivateAssets>

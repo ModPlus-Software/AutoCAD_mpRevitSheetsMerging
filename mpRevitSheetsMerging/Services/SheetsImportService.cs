@@ -2,8 +2,7 @@ namespace mpRevitSheetsMerging.Services;
 
 using System.IO;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Geometry;
-using Extensions;
+using ModPlus.Extensions;
 
 public class SheetsImportService
 {
@@ -20,8 +19,9 @@ public class SheetsImportService
     /// Импортирует листы из файла dwg в текущий чертёж в стартовую точку - левый нижний угол.
     /// </summary>
     /// <param name="dwgFile">Полный путь к файлу</param>
+    /// <param name="commonNamePart">Общая часть имен файлов</param>
     /// <param name="maxX">Максимальное значение X</param>
-    public void ImportSheets(string dwgFile, ref double maxX)
+    public void ImportSheets(string dwgFile, string commonNamePart, ref double maxX)
     {
         // Открытие чертежа с импортируемыми листами
         var importDb = new Database(false, true);
@@ -39,7 +39,7 @@ public class SheetsImportService
             if (importLayout.ModelType)
                 continue;
 
-            _copyLayoutService.Copy(importLayout, Path.GetFileNameWithoutExtension(dwgFile), move);
+            _copyLayoutService.Copy(importLayout, Path.GetFileNameWithoutExtension(dwgFile).Replace(commonNamePart, string.Empty), move);
             break;
         }
     }

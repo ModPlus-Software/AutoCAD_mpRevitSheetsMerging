@@ -1,31 +1,40 @@
 ﻿namespace mpRevitSheetsMerging;
 
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Windows;
+using System.Linq;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+using ModPlusAPI;
 using ModPlusAPI.Windows;
 using Services;
-using MessageBox = System.Windows.MessageBox;
 
+/// <summary>
+/// Command class
+/// </summary>
 public class Command
 {
-    private const string PluginName = "Объединение листов";
-
+    /// <summary>
+    /// Start command
+    /// </summary>
     [CommandMethod("mpRevitSheetsMerging")]
     public void SheetsMergingCommand()
     {
         try
         {
+            var pluginName = Language.GetPluginLocalName(new ModPlusConnector());
             var dwgFiles = SelectMergingFiles();
             var sheetImportService = new SheetsImportService();
             var maxX = 0.0;
 
             using var progress = new ProgressMeter();
             progress.SetLimit(dwgFiles.Length);
-            progress.Start("Обработка файлов...");
+
+            // Обработка файлов...
+            progress.Start(Language.GetItem("h1"));
+
+            var commonNamePart = GetCommonNamePart(dwgFiles);
 
             foreach (var dwgFile in dwgFiles)
             {
@@ -33,21 +42,18 @@ public class Command
 
                 try
                 {
-                    sheetImportService.ImportSheets(dwgFile, ref maxX);
+                    sheetImportService.ImportSheets(dwgFile, commonNamePart, ref maxX);
                 }
                 catch (System.Exception ex)
                 {
-                    var result = MessageBox.Show(
-                        $"Ошибка импорта листов из файла '{Path.GetFileName(dwgFile)}':{Environment.NewLine}" +
-                        $"{ex.Message}{Environment.NewLine}" +
-                        $"{Environment.NewLine}" +
-                        "Продолжить?",
-                        PluginName,
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Error,
-                        MessageBoxResult.Yes);
-
-                    if (result == MessageBoxResult.No)
+                    // Ошибка импорта листов из файла
+                    if (!MessageBox.ShowYesNo(
+                            $"{Language.GetItem("h2")} \"{Path.GetFileName(dwgFile)}\":{Environment.NewLine}" +
+                            $"{ex.Message}{Environment.NewLine}" +
+                            $"{Environment.NewLine}" +
+                            $"{Language.GetCommonItem("continue")}?",
+                            pluginName,
+                            MessageBoxIcon.Alert))
                         throw new OperationCanceledException();
                 }
             }
@@ -67,7 +73,7 @@ public class Command
     private string[] SelectMergingFiles()
     {
         var selectFilesDialog = new OpenFileDialog(
-            "Выбор файлов для объединения листов",
+            Language.GetItem("h3"),
             string.Empty,
             "dwg",
             string.Empty,
@@ -76,5 +82,14 @@ public class Command
             return selectFilesDialog.GetFilenames();
 
         throw new OperationCanceledException();
+    }
+
+    private string GetCommonNamePart(IEnumerable<string> fileNames)
+    {
+        var strings = fileNames.Select(Path.GetFileNameWithoutExtension).ToList();
+
+        // https://stackoverflow.com/a/30981377
+        return new string(strings.Select(str => str.TakeWhile((c, index) => strings.All(s => s[index] == c)))
+            .FirstOrDefault()?.ToArray());
     }
 }
