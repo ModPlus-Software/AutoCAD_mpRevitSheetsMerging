@@ -37,8 +37,10 @@ public class CopyModelSpaceService
         var imageFileNames = new Dictionary<string, string>();
         foreach (ObjectId id in importIds)
         {
-            if (id.TryOpenAs<RasterImage>() is { } rasterImage &&
-                rasterImage.ImageDefId.TryOpenAs<RasterImageDef>() is { } rasterImageDef &&
+            using var rasterImage = id.TryOpenAs<RasterImage>();
+            if (rasterImage == null)
+                continue;
+            if (rasterImage.ImageDefId.TryOpenAs<RasterImageDef>() is { } rasterImageDef &&
                 !imageFileNames.ContainsKey(rasterImageDef.SourceFileName))
                 imageFileNames.Add(rasterImageDef.SourceFileName, rasterImageDef.ActiveFileName);
         }
@@ -52,7 +54,7 @@ public class CopyModelSpaceService
 
         FixImages(copyIds, imageFileNames);
         Move(importDb, copyIds, ref maxX, out move);
-        
+
         curT.Commit();
     }
 

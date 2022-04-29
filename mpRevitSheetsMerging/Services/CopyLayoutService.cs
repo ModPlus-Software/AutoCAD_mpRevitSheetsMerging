@@ -13,8 +13,8 @@ using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 /// </summary>
 public class CopyLayoutService
 {
-    private readonly List<string> _toReplaceSymbols = new () { ";", ",", "=", "`" };
-    private readonly List<string> _thatReplaceSymbols = new () { ".", ".", "-", "'" };
+    private readonly List<string> _toReplaceSymbols = new() { ";", ",", "=", "`" };
+    private readonly List<string> _thatReplaceSymbols = new() { ".", ".", "-", "'" };
 
     /// <summary>
     /// Копирует импортируемый лист в текущий чертёж и смещает нацеливание видовых экранов
@@ -44,8 +44,11 @@ public class CopyLayoutService
         {
             for (var i = importLayoutIds.Count - 1; i >= 0; i--)
             {
-                if (importLayoutIds[i].TryOpenAs<Viewport>() is { } vp &&
-                    Math.Abs(vp.Width - 12) < 0.1 &&
+                using var vp = importLayoutIds[i].TryOpenAs<Viewport>();
+                if (vp == null)
+                    continue;
+
+                if (Math.Abs(vp.Width - 12) < 0.1 &&
                     Math.Abs(vp.Height - 9) < 0.1 &&
                     vp.GeometricExtents.MinPoint.IsEqualTo(Point3d.Origin))
                     importLayoutIds.RemoveAt(i);
