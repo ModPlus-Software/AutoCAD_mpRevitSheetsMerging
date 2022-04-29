@@ -20,7 +20,7 @@ public class CopyModelSpaceService
     /// <param name="move">Возвращает вектор перемещения объектов</param>
     public void Copy(Database importDb, ref double maxX, out Vector3d move)
     {
-        var curDoc = Application.DocumentManager.CurrentDocument;
+        var curDoc = Application.DocumentManager.MdiActiveDocument;
         var curDb = curDoc.Database;
         using var curT = curDoc.TransactionManager.StartTransaction();
 
