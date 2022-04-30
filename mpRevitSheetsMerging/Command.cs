@@ -7,6 +7,7 @@ using System.Linq;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using ModPlusAPI;
+using ModPlusAPI.IO;
 using ModPlusAPI.Windows;
 using Services;
 
@@ -36,7 +37,7 @@ public class Command
 
             var commonNamePart = GetCommonNamePart(dwgFiles);
 
-            foreach (var dwgFile in dwgFiles)
+            foreach (var dwgFile in dwgFiles.OrderBy(i => i, new OrdinalStringComparer()))
             {
                 progress.MeterProgress();
 

@@ -29,7 +29,7 @@ public class SheetsImportService
         importDb.ReadDwgFile(dwgFile, FileShare.ReadWrite, true, string.Empty);
 
         // Копирование модели импортируемого чертежа в текущий со сдвигом в стартовую точку
-        _copyModelSpaceService.Copy(importDb, ref maxX, out var move);
+        _copyModelSpaceService.Copy(importDb, ref maxX, out var move, out var isEmptyModelSpace);
 
         // Копирование импортируемых листов
         using var layoutDic = importDb.LayoutDictionaryId.OpenAs<DBDictionary>();
@@ -39,7 +39,8 @@ public class SheetsImportService
             if (importLayout.ModelType)
                 continue;
 
-            _copyLayoutService.Copy(importLayout, Path.GetFileNameWithoutExtension(dwgFile).Replace(commonNamePart, string.Empty), move);
+            _copyLayoutService.Copy(
+                importLayout, Path.GetFileNameWithoutExtension(dwgFile).Replace(commonNamePart, string.Empty), move, isEmptyModelSpace);
             break;
         }
     }

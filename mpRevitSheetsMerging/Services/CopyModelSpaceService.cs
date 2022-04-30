@@ -18,7 +18,8 @@ public class CopyModelSpaceService
     /// <param name="importDb">Импортируемый файл</param>
     /// <param name="maxX">Стартовая точка - левый нижний угол</param>
     /// <param name="move">Возвращает вектор перемещения объектов</param>
-    public void Copy(Database importDb, ref double maxX, out Vector3d move)
+    /// <param name="isEmptyModelSpace">Пространство модели пусто</param>
+    public void Copy(Database importDb, ref double maxX, out Vector3d move, out bool isEmptyModelSpace)
     {
         var curDoc = Application.DocumentManager.MdiActiveDocument;
         var curDb = curDoc.Database;
@@ -29,8 +30,11 @@ public class CopyModelSpaceService
         if (!importMsIds.Any())
         {
             move = new Vector3d(0, 0, 0);
+            isEmptyModelSpace = true;
             return;
         }
+
+        isEmptyModelSpace = false;
 
         var importIds = new ObjectIdCollection(importMsIds);
 

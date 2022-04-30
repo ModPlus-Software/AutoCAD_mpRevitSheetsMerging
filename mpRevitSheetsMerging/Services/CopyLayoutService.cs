@@ -13,8 +13,8 @@ using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 /// </summary>
 public class CopyLayoutService
 {
-    private readonly List<string> _toReplaceSymbols = new() { ";", ",", "=", "`" };
-    private readonly List<string> _thatReplaceSymbols = new() { ".", ".", "-", "'" };
+    private readonly List<string> _toReplaceSymbols = new () { ";", ",", "=", "`" };
+    private readonly List<string> _thatReplaceSymbols = new () { ".", ".", "-", "'" };
 
     /// <summary>
     /// Копирует импортируемый лист в текущий чертёж и смещает нацеливание видовых экранов
@@ -22,15 +22,24 @@ public class CopyLayoutService
     /// <param name="importLayout">Лист из импортируемого файла</param>
     /// <param name="newLayoutName">Имя нового листа</param>
     /// <param name="move">Вектор перемещения объектов</param>
-    public void Copy(Layout importLayout, string newLayoutName, Vector3d move)
+    /// <param name="isEmptyModelSpace">Пространство модели пусто</param>
+    public void Copy(Layout importLayout, string newLayoutName, Vector3d move, bool isEmptyModelSpace)
     {
         var newLayoutId = CreateLayout(importLayout, newLayoutName);
 
-        CopyContent(newLayoutId, importLayout, move);
+        CopyContent(newLayoutId, importLayout, move, isEmptyModelSpace);
     }
 
-    private void CopyContent(ObjectId newLayoutId, Layout importLayout, Vector3d move)
+    private void CopyContent(ObjectId newLayoutId, Layout importLayout, Vector3d move, bool isEmptyModelSpace)
     {
+        /*
+         * Если в исходном листе в Ревите нет вставленных видовых экранов, то при экспорте создается видовой экран
+         * с размерами как у основной надписи. Поэтому при копировании содержимого пространства модели получаем
+         * значение аргумента isEmptyModelSpace и если оно true (т.е. в пространстве модели ничего не было), то
+         * удаляем ненужный видовой экран. Для этого ищем блок в пространстве листа с наибольшей площадью, а затем
+         * проверяем площадь видовых экранов - если совпадает, то удаляем видовой экран
+         */
+
         var curDoc = AcApp.DocumentManager.MdiActiveDocument;
         var curDb = curDoc.Database;
 
@@ -42,6 +51,24 @@ public class CopyLayoutService
         var importLayoutIds = importLayoutBtr.OfType<ObjectId>().Where(id => id.IsFullyValid()).ToList();
         if (importLayoutIds.Any())
         {
+            var largestBlockReferenceArea = double.NaN;
+            if (isEmptyModelSpace)
+            {
+                foreach (var id in importLayoutIds)
+                {
+                    using var blk = id.TryOpenAs<BlockReference>();
+                    
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                    if (blk == null || blk.GeometricExtents == null)
+                        continue;
+                    var area = Math.Abs(blk.GeometricExtents.MaxPoint.X - blk.GeometricExtents.MinPoint.X) *
+                               Math.Abs(blk.GeometricExtents.MaxPoint.Y - blk.GeometricExtents.MinPoint.Y);
+
+                    if (double.IsNaN(largestBlockReferenceArea) || area > largestBlockReferenceArea)
+                        largestBlockReferenceArea = area;
+                }
+            }
+
             for (var i = importLayoutIds.Count - 1; i >= 0; i--)
             {
                 using var vp = importLayoutIds[i].TryOpenAs<Viewport>();
@@ -51,7 +78,16 @@ public class CopyLayoutService
                 if (Math.Abs(vp.Width - 12) < 0.1 &&
                     Math.Abs(vp.Height - 9) < 0.1 &&
                     vp.GeometricExtents.MinPoint.IsEqualTo(Point3d.Origin))
+                {
                     importLayoutIds.RemoveAt(i);
+                }
+                else if (isEmptyModelSpace)
+                {
+                    var area = Math.Abs(vp.GeometricExtents.MaxPoint.X - vp.GeometricExtents.MinPoint.X) *
+                               Math.Abs(vp.GeometricExtents.MaxPoint.Y - vp.GeometricExtents.MinPoint.Y);
+                    if (!double.IsNaN(largestBlockReferenceArea) && Math.Abs(largestBlockReferenceArea - area) < 0.1)
+                        importLayoutIds.RemoveAt(i);
+                }
             }
 
             var importIds = new ObjectIdCollection(importLayoutIds.ToArray());
