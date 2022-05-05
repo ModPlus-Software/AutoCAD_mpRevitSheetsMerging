@@ -39,8 +39,10 @@ public class SheetsImportService
             if (importLayout.ModelType)
                 continue;
 
-            _copyLayoutService.Copy(
-                importLayout, Path.GetFileNameWithoutExtension(dwgFile).Replace(commonNamePart, string.Empty), move, isEmptyModelSpace);
+            var newLayoutName = Path.GetFileNameWithoutExtension(dwgFile).Replace(commonNamePart, string.Empty);
+            if (string.IsNullOrEmpty(newLayoutName))
+                newLayoutName = Path.GetFileNameWithoutExtension(dwgFile);
+            _copyLayoutService.Copy(importLayout, newLayoutName, move, isEmptyModelSpace);
             break;
         }
     }
