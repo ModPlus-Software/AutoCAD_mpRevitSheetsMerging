@@ -39,7 +39,9 @@ public class SheetsImportService
             if (importLayout.ModelType)
                 continue;
 
-            var newLayoutName = Path.GetFileNameWithoutExtension(dwgFile).Replace(commonNamePart, string.Empty);
+            var newLayoutName = Path.GetFileNameWithoutExtension(dwgFile);
+            if (!string.IsNullOrEmpty(commonNamePart))
+                newLayoutName = newLayoutName.Replace(commonNamePart, string.Empty);
             if (string.IsNullOrEmpty(newLayoutName))
                 newLayoutName = Path.GetFileNameWithoutExtension(dwgFile);
             _copyLayoutService.Copy(importLayout, newLayoutName, move, isEmptyModelSpace);
