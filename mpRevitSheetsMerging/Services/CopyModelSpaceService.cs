@@ -52,7 +52,7 @@ public class CopyModelSpaceService
         var curMsId = curDb.MsId();
         var map = new IdMapping();
 
-        curDb.WblockCloneObjects(importIds, curMsId, map, DuplicateRecordCloning.Ignore, false);
+        curDb.WblockCloneObjects(importIds, curMsId, map, DuplicateRecordCloning.MangleName, false);
 
         var copyIds = importMsIds.Select(importId => map[importId].Value).ToArray();
 
