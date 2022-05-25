@@ -1,0 +1,36 @@
+﻿<mps:ModPlusWindow x:Class="mpRevitSheetsMerging.ProgressWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mps="https://modplus.org/winfx/xaml/controls"
+                   ResizeMode="NoResize"
+                   ShowCloseButton="False"
+                   ShowTitleBar="False"
+                   SizeToContent="WidthAndHeight"
+                   WindowStartupLocation="CenterScreen"
+                   WindowStyle="None"
+                   SaveWindowPosition="False">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ModPlusStyle;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Margin="5"
+                   FontSize="16"
+                   HorizontalAlignment="Center"
+                   Name="TbProgress" />
+        <ProgressBar Name="ProgressBar"
+                     Grid.Row="1"
+                     Width="300"
+                     Margin="5" />
+    </Grid>
+
+</mps:ModPlusWindow>

@@ -10,6 +10,7 @@ using ModPlusAPI;
 using ModPlusAPI.IO;
 using ModPlusAPI.Windows;
 using Services;
+using AcApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 /// <summary>
 /// Command class
@@ -22,24 +23,29 @@ public class Command
     [CommandMethod("mpRevitSheetsMerging")]
     public void SheetsMergingCommand()
     {
+        ProgressWindow? progressWindow = null;
         try
         {
             var pluginName = Language.GetPluginLocalName(new ModPlusConnector());
             var dwgFiles = SelectMergingFiles();
             var sheetImportService = new SheetsImportService();
             var maxX = 0.0;
-
-            using var progress = new ProgressMeter();
-            progress.SetLimit(dwgFiles.Length);
-
-            // Обработка файлов...
-            progress.Start(Language.GetItem("h1"));
+            
+            // progress
+            progressWindow = new ProgressWindow
+            {
+                ProgressBar = { Maximum = dwgFiles.Length }
+            };
+            AcApp.ShowModelessWindow(AcApp.MainWindow.Handle, progressWindow);
 
             var commonNamePart = GetCommonNamePart(dwgFiles);
 
+            var index = 0;
             foreach (var dwgFile in dwgFiles.OrderBy(i => i, new OrdinalStringComparer()))
             {
-                progress.MeterProgress();
+                // Обработка файлов...
+                progressWindow?.Dispatcher.Invoke(() => progressWindow.ProgressBar.Value = ++index);
+                progressWindow?.Dispatcher.Invoke(() => progressWindow.TbProgress.Text = $"{Language.GetItem("h1")} {index}/{dwgFiles.Length}");
 
                 try
                 {
@@ -58,16 +64,18 @@ public class Command
                         throw new OperationCanceledException();
                 }
             }
-
-            progress.Stop();
         }
         catch (OperationCanceledException)
         {
             // ignore
         }
-        catch (System.Exception ex)
+        catch (System.Exception exception)
         {
-            ex.ShowInExceptionBox();
+            exception.ShowInExceptionBox();
+        }
+        finally
+        {
+            progressWindow?.Dispatcher.Invoke(() => progressWindow?.Close());
         }
     }
 
