@@ -24,7 +24,7 @@ public class SheetsImportService
     public void ImportSheets(string dwgFile, string commonNamePart, ref double maxX)
     {
         // Открытие чертежа с импортируемыми листами
-        var importDb = new Database(false, true);
+        using var importDb = new Database(false, true);
         importDb.CloseInput(true);
         importDb.ReadDwgFile(dwgFile, FileShare.ReadWrite, true, string.Empty);
 

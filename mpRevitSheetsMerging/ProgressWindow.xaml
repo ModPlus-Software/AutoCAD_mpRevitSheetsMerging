@@ -6,7 +6,7 @@
                    ShowCloseButton="False"
                    ShowTitleBar="False"
                    SizeToContent="WidthAndHeight"
-                   WindowStartupLocation="CenterScreen"
+                   WindowStartupLocation="CenterOwner"
                    WindowStyle="None"
                    SaveWindowPosition="False">
     <Window.Resources>
