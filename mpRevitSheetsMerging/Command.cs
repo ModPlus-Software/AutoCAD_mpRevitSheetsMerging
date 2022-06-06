@@ -22,7 +22,7 @@ public class Command
     /// <summary>
     /// Start command
     /// </summary>
-    [CommandMethod("mpRevitSheetsMerging")]
+    [CommandMethod("ModPlus", "mpRevitSheetsMerging", CommandFlags.Session)]
     public void SheetsMergingCommand()
     {
         ProgressWindow? progressWindow = null;
@@ -41,6 +41,8 @@ public class Command
             AcApp.ShowModelessWindow(AcApp.MainWindow.Handle, progressWindow);
 
             var commonNamePart = GetCommonNamePart(dwgFiles);
+
+            using var docLock = AcApp.DocumentManager.MdiActiveDocument.LockDocument();
 
             var index = 0;
             foreach (var dwgFile in dwgFiles.OrderBy(i => i, new OrdinalStringComparer()))
